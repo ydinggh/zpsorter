@@ -13,6 +13,12 @@ public class ZipcodeRangeList extends LinkedList<Range> {
 	
 	private static final long serialVersionUID = 1111100000L;
 
+	/**
+	 * add the range to the linked list, make it sorted on lower bounds and remove duplicates and overlappings.
+	 * Each insert will find the insert position in log(N), and advance m nodes forward for removing overlapping ranges.
+	 * If m nodes is traversed it reduce the list size by m also. Overall the performance is not worse than N * log(N) 
+	 * @param range
+	 */
 	public void buildRange(Range range) {
 		// add to the list the first time
 		if (isEmpty()) {
@@ -31,19 +37,10 @@ public class ZipcodeRangeList extends LinkedList<Range> {
 			add(range);
 			return;
 		}
+
+		// if new range's lower bound is less than prevLink's upper bound, adjust pos to start from prevLink's position 
+		// and set new range's lower bound the same as pfrevLink's lower bound.
 		
-		// if lower bounds is the same as the one in the list, check upper bounds, 
-		if (get(pos).lower == range.lower) {
-			// if new range's upper bounds is greater than existing range's upper bound,
-			// do not add new range, just update the existing range's upper bound.
-			// otherwise no need to add just return
-			if (range.upper > get(pos).upper) {
-				get(pos).upper = range.upper;
-			}
-			return;
-		}
-		
-		// if new range's lower bound is less than prevLink's upper bound, adjust pos to prevLink
 		if (pos > 0) {
 			Range prevLink = get(pos-1);
 			if (prevLink.upper > range.lower) {

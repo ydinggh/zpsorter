@@ -199,4 +199,24 @@ public class ZipcodeRangeListTest
     	assertEquals(700, r3.lower);
     	assertEquals(800, r3.upper);
     }
+    
+    @Test
+    public void testNewRangeConnectRangesReverse() {
+    	ZipcodeRangeList list = new ZipcodeRangeList();
+    	list.add(new Range(100, 200));
+    	list.add(new Range(300, 400));
+    	list.add(new Range(500, 600));
+    	list.add(new Range(700, 800));
+    	list.buildRange(new Range(150, 380));
+    	assertEquals(3, list.size());
+    	Range r1 = list.get(0);
+    	assertEquals(100, r1.lower);
+    	assertEquals(400, r1.upper);
+    	Range r2 = list.get(1);
+    	assertEquals(500, r2.lower);
+    	assertEquals(600, r2.upper);
+    	Range r3= list.get(2);
+    	assertEquals(700, r3.lower);
+    	assertEquals(800, r3.upper);
+    }
 }
